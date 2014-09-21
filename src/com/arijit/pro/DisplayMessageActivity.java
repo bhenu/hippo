@@ -31,9 +31,9 @@ public class DisplayMessageActivity extends Activity  {
 
         // Insert the back button 
         ActionBar actionbar = getActionBar();
-        while(actionbar == null) {
-            actionbar = getActionBar();
-        }
+        // while(actionbar == null) {
+        //     actionbar = getActionBar();
+        // }
         actionbar.setDisplayHomeAsUpEnabled(true);
 
     }

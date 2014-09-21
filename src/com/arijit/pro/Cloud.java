@@ -13,6 +13,7 @@ import java.net.*;
 import java.io.*;
 import android.os.AsyncTask;
 import java.lang.ref.WeakReference;
+import android.util.Log;
 
 public class Cloud extends Activity  {
 
@@ -81,6 +82,7 @@ public class Cloud extends Activity  {
             return null;
         }
         catch (IOException e) {
+            Log.e("downloadImage", "IOException occured");
             return null;
         }
     } 
