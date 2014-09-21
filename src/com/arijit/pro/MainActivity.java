@@ -9,6 +9,7 @@ import android.view.View;
 import android.app.ActionBar;
 import android.net.*;
 import android.os.BatteryManager;
+import android.util.Log;
 
 public class MainActivity extends Activity 
 {
@@ -25,10 +26,13 @@ public class MainActivity extends Activity
     /** Called when the user clicks the Send button */
     public void sendMessage(View view) {
         Intent intent = new Intent(this, DisplayMessageActivity.class);
-        EditText editText = (EditText) findViewById(R.id.edit_message);
+        EditText editText = (EditText) findViewById(R.id.edit_message);        
+        Log.w("MainActivity", "got the message");
         int left = editText.getWidth();
         String message = editText.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, message);
+        Log.w("MainActivity", "about to send");
+
         startActivity(intent);
     }
 
@@ -96,5 +100,10 @@ public class MainActivity extends Activity
 
     public void showToast(View view){        
         Toast.makeText(MainActivity.this, "hello", Toast.LENGTH_SHORT).show();
+    }
+
+    public void loadPic(View view){         
+        Intent intent = new Intent(this, Cloud.class);
+        startActivity(intent);
     }
 }

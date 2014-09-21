@@ -7,12 +7,14 @@ import android.view.*;
 import android.widget.TextView;
 import android.app.ActionBar;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 
 public class DisplayMessageActivity extends Activity  {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         // Get the message from the intent
         Intent intent = getIntent();
@@ -29,6 +31,9 @@ public class DisplayMessageActivity extends Activity  {
 
         // Insert the back button 
         ActionBar actionbar = getActionBar();
+        while(actionbar == null) {
+            actionbar = getActionBar();
+        }
         actionbar.setDisplayHomeAsUpEnabled(true);
 
     }
