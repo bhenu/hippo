@@ -27,7 +27,6 @@ public class Cloud extends Activity  {
         // Cteate the Image view
         ImageView mImageView = (ImageView) findViewById(R.id.canvas);
         ProgressBar spinner = (ProgressBar) findViewById(R.id.spinner);   
-        mImageView.setVisibility(View.GONE);
 
         // Run async task to download image
         new downloadImageTask(mImageView, spinner).execute("http://www.usmagazine.com/uploads/assets/articles/68067-karlie-kloss-wears-sheer-bodysuit-at-victorias-secret-fashion-show-see-all-of-he/1384436021_karlie-kloss-taylor-swift-zoom.jpg");
