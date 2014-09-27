@@ -1,19 +1,24 @@
 package com.arijit.pro;
 
-import android.app.Activity ;
-import android.os.Bundle;
-import android.content.Intent;
-import android.view.*;
-import android.widget.*;
-import android.app.ActionBar;
-import android.support.v4.app.NavUtils;
-import android.graphics.BitmapFactory;
-import android.graphics.Bitmap;
-import java.net.*;
-import java.io.*;
-import android.os.AsyncTask;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 public class Cloud extends Activity  {
 
@@ -29,7 +34,7 @@ public class Cloud extends Activity  {
         ProgressBar spinner = (ProgressBar) findViewById(R.id.spinner);   
 
         // Run async task to download image
-        new downloadImageTask(mImageView, spinner).execute("http://www.usmagazine.com/uploads/assets/articles/68067-karlie-kloss-wears-sheer-bodysuit-at-victorias-secret-fashion-show-see-all-of-he/1384436021_karlie-kloss-taylor-swift-zoom.jpg");
+        new downloadImageTask(mImageView, spinner).execute("https://farm6.staticflickr.com/5574/15138586768_9afee4767f.jpg");
 
         // Insert the back button 
         getActionBar().setDisplayHomeAsUpEnabled(true);

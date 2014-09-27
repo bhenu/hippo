@@ -1,15 +1,18 @@
 package com.arijit.pro;
 
-import android.app.Activity ;
-import android.os.Bundle;
-import android.content.*;
-import android.widget.*;
-import android.view.*;
-import android.view.View;
-import android.app.ActionBar;
-import android.net.*;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.BatteryManager;
+import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends Activity 
 {
@@ -28,7 +31,6 @@ public class MainActivity extends Activity
         Intent intent = new Intent(this, DisplayMessageActivity.class);
         EditText editText = (EditText) findViewById(R.id.edit_message);        
         Log.w("MainActivity", "got the message");
-        int left = editText.getWidth();
         String message = editText.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, message);
         Log.w("MainActivity", "about to send");
@@ -62,11 +64,6 @@ public class MainActivity extends Activity
         int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
         boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
                              status == BatteryManager.BATTERY_STATUS_FULL;
-
-        // How are we charging?
-        int chargePlug = batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
-        boolean usbCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_USB;
-        boolean acCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_AC;
 
         String message;
         if(isCharging)
@@ -104,6 +101,11 @@ public class MainActivity extends Activity
 
     public void loadPic(View view){         
         Intent intent = new Intent(this, Cloud.class);
+        startActivity(intent);
+    }
+
+    public void volleyRqst(View view) {
+        Intent intent = new Intent(this, BetterCloud.class);
         startActivity(intent);
     }
 }
