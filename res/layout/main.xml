@@ -54,5 +54,11 @@
         android:layout_height="wrap_content"
         android:text="@string/button_show_image" 
         android:onClick="loadPic" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="google" 
+        android:onClick="volleyRqst" />
         
 </LinearLayout>
