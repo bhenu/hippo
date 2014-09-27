@@ -1,64 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:paddingLeft="16dp"
-              android:paddingRight="16dp">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:scrollbarStyle="insideOverlay"
+    android:scrollbars="vertical" >
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >            
-        <Button android:id="@+id/send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_send"
-            android:layout_alignParentRight="true"
-            android:onClick="sendMessage" />
-        <EditText android:id="@+id/edit_message"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/send"
-            android:hint="@string/edit_message" />
-    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp" >
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">  
-        <Button android:id="@+id/button_check_network"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_check_network"
-            android:onClick="checkNetwork" />
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:onClick="sendMessage"
+                android:text="@string/button_send" />
+
+            <EditText
+                android:id="@+id/edit_message"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/send"
+                android:hint="@string/edit_message" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/button_check_network"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkNetwork"
+                android:text="@string/button_check_network" />
+
+            <Button
+                android:id="@+id/button_get_position"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/button_check_network"
+                android:onClick="getPosition"
+                android:text="@string/button_get_position" />
+        </RelativeLayout>
+
         <Button
-            android:id="@+id/button_get_position"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/button_check_network"
-            android:text="@string/button_get_position" 
-            android:onClick="getPosition" />
-    </RelativeLayout>
+            android:layout_gravity="end"
+            android:onClick="openGrid"
+            android:text="@string/button_open_grid" />
 
-    <Button android:layout_gravity="end"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/button_open_grid" 
-        android:onClick="openGrid" />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/button_check_battery" 
-        android:onClick="batteryStatus" />    
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/button_show_image" 
-        android:onClick="loadPic" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="batteryStatus"
+            android:text="@string/button_check_battery" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="google" 
-        android:onClick="volleyRqst" />
-        
-</LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="loadPic"
+            android:text="@string/button_show_image" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="volleyRqst"
+            android:text="google" />
+    </LinearLayout>
+
+</ScrollView>
