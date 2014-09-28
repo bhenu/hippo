@@ -2,3 +2,6 @@ bin/
 *.properties
 gen/
 build.xml
+.classpath
+.project
+.settings/
