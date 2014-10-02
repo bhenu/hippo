@@ -18,6 +18,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 
 public class FlickrGallery extends Activity  {
 
@@ -92,23 +93,20 @@ public class FlickrGallery extends Activity  {
             return mThumbIds[position];
         }
 
-        // create a new ImageView for each item referenced by the Adapter
+        // create a new NetworkImageView for each item referenced by the Adapter
         public View getView(int position, View convertView, ViewGroup parent) {
-            ImageView imageView;
-            // if (convertView == null) {  // if it's not recycled, initialize some attributes
-                imageView = new ImageView(mContext);
-                imageView.setLayoutParams(new GridView.LayoutParams(IMAGE_DIMENSION, IMAGE_DIMENSION));
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            // } else {
-            //     imageView = (ImageView) convertView;
-            // }
+            NetworkImageView netImageView;
+            if (convertView == null) {  // if it's not recycled, initialize some attributes
+                netImageView = new NetworkImageView(mContext);
+                netImageView.setLayoutParams(new GridView.LayoutParams(IMAGE_DIMENSION, IMAGE_DIMENSION));
+                netImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            } else {
+                netImageView = (NetworkImageView) convertView;
+            }
 
-            // Use volley's image loader to populate the grid.
-            mImageLoader.get(URLS[position], ImageLoader.getImageListener(imageView,
-            R.drawable.image_background, R.drawable.image_background));
-
-            // imageView.setImageResource(mThumbIds[position]);
-            return imageView;
+            netImageView.setImageUrl(URLS[position], mImageLoader);
+            netImageView.setDefaultImageResId(R.drawable.image_background);
+            return netImageView;
         }
 
         // references to our images
