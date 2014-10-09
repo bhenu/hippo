@@ -33,6 +33,8 @@ import org.json.JSONArray;
 
 public class FlickrGallery extends Activity  {
 
+    private ImageAdapter mImageAdapter;
+
     @Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +45,7 @@ public class FlickrGallery extends Activity  {
         setContentView(R.layout.gallery);
 
         // Set layout adapter
-        final ImageAdapter mImageAdapter = new ImageAdapter(this);
+        mImageAdapter = new ImageAdapter(this);
         GridView flickr_gallery = (GridView) findViewById(R.id.flickr_gallery);
         flickr_gallery.setAdapter(mImageAdapter);
 
@@ -57,32 +59,34 @@ public class FlickrGallery extends Activity  {
             }
         });
 
-        // Get image urls from flickr
-        String apiUrl = "https://api.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=5c614dfbc3ba968e600ef21b0cebb014&format=json&nojsoncallback=1&auth_token=72157648340602662-5bb254dcc4dfbd61&api_sig=e4bbdfe73928cdc002ce4bb10222146d";
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-        (Request.Method.GET, apiUrl, null, new Response.Listener<JSONObject>() {
+        if (savedInstanceState == null) {      
+            // Get images from flickr
+            String apiUrl = "https://api.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=6c68709c9c10022f4df15a7c39637811&format=json&nojsoncallback=1&per_page=20";
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest
+            (Request.Method.GET, apiUrl, null, new Response.Listener<JSONObject>() {
 
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONObject photos = response.getJSONObject("photos");
-                    ArrayList<String> urlList = URLConstructor(photos.getJSONArray("photo"));
-                    mImageAdapter.addData(urlList);
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        JSONObject photos = response.getJSONObject("photos");
+                        ArrayList<String> urlList = URLConstructor(photos.getJSONArray("photo"));
+                        mImageAdapter.addData(urlList);
+                    }
+                    catch (JSONException e){
+                        Log.e("JSONResponse", e.toString());
+                    }
+                    
                 }
-                catch (JSONException e){
-                    Log.e("JSONResponse", e.toString());
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("JSONResponse", "something went wrong");
+
                 }
-                
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.i("JSONResponse", "something went wrong");
-
-            }
-        });
-        NetworkHandler.getInstance(this).addToRequestQueue(jsObjRequest);
+            });
+            NetworkHandler.getInstance(this).addToRequestQueue(jsObjRequest);
+        }
 
         // Insert the back button 
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -98,6 +102,21 @@ public class FlickrGallery extends Activity  {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putStringArrayList("URLS_FINAL", mImageAdapter.getURLList());
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // Restore state members from saved instance
+        mImageAdapter.addData(savedInstanceState.getStringArrayList("URLS_FINAL"));
+    }
+
 
     private ArrayList<String> URLConstructor(JSONArray photos){
         int n = photos.length();
@@ -134,6 +153,7 @@ public class FlickrGallery extends Activity  {
     public class ImageAdapter extends BaseAdapter {
         private Context mContext;
         private int IMAGE_DIMENSION;
+        private int page = 2;
         // Get Volley's image loader to load the images.
         private ImageLoader mImageLoader;
 
@@ -160,6 +180,10 @@ public class FlickrGallery extends Activity  {
             return null;
         }
 
+        public ArrayList<String> getURLList() {
+            return URLS_FINAL;
+        }
+
         @Override
         public long getItemId(int position) {
             return mThumbIds[position];
@@ -181,10 +205,36 @@ public class FlickrGallery extends Activity  {
             netImageView.setImageUrl(URLS_FINAL.get(position), mImageLoader);
             netImageView.setDefaultImageResId(R.drawable.image_background);
 
-            // load more images when end is reached
-            // if(position == getCount() -1){
-            //     addData(new ArrayList<String>(Arrays.asList(URLS2)));
-            // }
+            // load more images from flickr
+            if(position == getCount() -4){
+                String apiUrl = "https://api.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=6c68709c9c10022f4df15a7c39637811&format=json&nojsoncallback=1&per_page=20&page=" + page;
+                JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, apiUrl, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject photos = response.getJSONObject("photos");
+                            ArrayList<String> urlList = URLConstructor(photos.getJSONArray("photo"));
+                            addData(urlList);
+                            page++;
+                        }
+                        catch (JSONException e){
+                            Log.e("JSONResponse", e.toString());
+                        }
+                        
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("JSONResponse", "something went wrong");
+
+                    }
+                });
+                NetworkHandler.getInstance(mContext).addToRequestQueue(jsObjRequest);
+            }
+
             return netImageView;
         }
 
@@ -217,7 +267,6 @@ public class FlickrGallery extends Activity  {
             R.drawable.sample_6, R.drawable.sample_7
         };
 
-        // private ArrayList<String> URLS_FINAL = new ArrayList<String>(Arrays.asList(URLS));
         private ArrayList<String> URLS_FINAL = new ArrayList<String>();
     }
 };
